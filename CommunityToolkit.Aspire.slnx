@@ -163,7 +163,6 @@
     <Project Path="examples/surrealdb/CommunityToolkit.Aspire.Hosting.SurrealDb.ServiceDefaults/CommunityToolkit.Aspire.Hosting.SurrealDb.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="CommunityToolkit.Aspire.Hosting.Sftp/CommunityToolkit.Aspire.Hosting.Sftp.csproj" Id="88177ae0-1bd2-47be-a018-e5e205f34a56" />
     <Project Path="src/CommunityToolkit.Aspire.GoFeatureFlag/CommunityToolkit.Aspire.GoFeatureFlag.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.ActiveMQ/CommunityToolkit.Aspire.Hosting.ActiveMQ.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.Adminer/CommunityToolkit.Aspire.Hosting.Adminer.csproj" />
@@ -195,6 +194,7 @@
     <Project Path="src/CommunityToolkit.Aspire.Hosting.RavenDB/CommunityToolkit.Aspire.Hosting.RavenDB.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.Redis.Extensions/CommunityToolkit.Aspire.Hosting.Redis.Extensions.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.Rust/CommunityToolkit.Aspire.Hosting.Rust.csproj" />
+    <Project Path="src/CommunityToolkit.Aspire.Hosting.Sftp/CommunityToolkit.Aspire.Hosting.Sftp.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.Solr/CommunityToolkit.Aspire.Hosting.Solr.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.SqlDatabaseProjects/CommunityToolkit.Aspire.Hosting.SqlDatabaseProjects.csproj" />
     <Project Path="src/CommunityToolkit.Aspire.Hosting.Sqlite/CommunityToolkit.Aspire.Hosting.Sqlite.csproj" />
