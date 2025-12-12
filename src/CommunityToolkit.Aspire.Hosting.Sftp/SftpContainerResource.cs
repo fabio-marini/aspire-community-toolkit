@@ -6,9 +6,7 @@
 /// <param name="name"></param>
 public class SftpContainerResource(string name) : ContainerResource(name), IResourceWithConnectionString
 {
-    internal const int HttpEndpointPort = 8080;
-    internal const int SftpEndpointPort = 2222;
-    internal const string HttpEndpointName = "http";
+    internal const int SftpEndpointPort = 22;
     internal const string SftpEndpointName = "sftp";
     private EndpointReference? _sftpEndpoint;
     private EndpointReference SftpEndpoint => _sftpEndpoint ??= new EndpointReference(this, SftpEndpointName);
