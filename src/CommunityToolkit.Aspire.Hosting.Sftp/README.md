@@ -7,46 +7,36 @@ This .NET Aspire Integration runs the [atmoz SFTP server](https://hub.docker.com
 
 ## Usage
 
-The atmoz SFTP integration exposes a connection string with the format `endpoint=sftp://<host>:<port>`.
+The SFTP integration exposes a connection string with the format `endpoint=sftp://<host>:<port>`.
 This connection string can be used to with a DbConnectionStringBuilder to get the sftp endpoint.
 
-### Example 1: Add atmoz SFTP with generated ports
+### Example 1: Add SFTP container with user credentials as arguments
 
 ```csharp
-var builder = DistributedApplication.CreateBuilder(args);
-
-var sftp = builder.AddSftp("sftp");
-
-var xyz = builder.AddProject<Xyz>("application")
-    .WithReference(sftp)
-    .WaitFor(sftp);
-
-builder.Build().Run();
+builder.AddSftp("sftp-1", port: 55010, args: "foo:pass:::uploads");
 ```
 
-### Example 2: Add atmoz SFTP with user-defined ports
+### Example 2: Add SFTP container with user credentials in config file
 
 ```csharp
-var builder = DistributedApplication.CreateBuilder(args);
-
-var sftp = builder.AddSftp("sftp", 80, 25);
-
-var xyz = builder.AddProject<Xyz>("application")
-    .WithReference(sftp)
-    .WaitFor(sftp);
-
-builder.Build().Run();
+builder.AddSftp("sftp-2", port: 55020)
+    .WithBindMount(".\\etc\\sftp\\users.conf", "/etc/sftp/users.conf", isReadOnly: true);
 ```
 
-### Example 3: Get URI from connection-string using DbConnectionStringBuilder
+### Example 3: Add SFTP container with own host key, as opposed to auto-generated
 
 ```csharp
-string? sftpConnectionString = builder.Configuration.GetConnectionString("sftp");
-DbConnectionStringBuilder connectionBuilder = new()
-{
-    ConnectionString = sftpConnectionString 
-};
+builder.AddSftp("sftp-3", port: 55030)
+    .WithBindMount(".\\etc\\sftp\\users.conf", "/etc/sftp/users.conf", isReadOnly: true)
+    .WithBindMount(".\\etc\\ssh\\ssh_host_ed25519_key", "/etc/ssh/ssh_host_ed25519_key")
+    .WithBindMount(".\\etc\\ssh\\ssh_host_rsa_key", "/etc/ssh/ssh_host_rsa_key");
+```
 
-Uri endpoint = new(connectionBuilder["Endpoint"].ToString()!, UriKind.Absolute);
-builder.Services.AddScoped(_ => new SmtpClient(endpoint.Host, endpoint.Port));
+### Example 4: Add SFTP container with user logging with public/private SSH key pair
+
+```csharp
+builder.AddSftp("sftp-4", port: 55040, args: "foo::::uploads")
+    .WithBindMount(".\\etc\\ssh\\ssh_host_ed25519_key", "/etc/ssh/ssh_host_ed25519_key")
+    .WithBindMount(".\\etc\\ssh\\ssh_host_rsa_key", "/etc/ssh/ssh_host_rsa_key")
+    .WithBindMount(".\\home\\foo\\.ssh\\keys\\id_rsa.pub", "/home/foo/.ssh/keys/id_rsa.pub", isReadOnly: true);
 ```

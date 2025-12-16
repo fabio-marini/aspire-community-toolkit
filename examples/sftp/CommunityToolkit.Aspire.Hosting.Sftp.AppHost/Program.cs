@@ -1,7 +1,7 @@
 using Aspire.Hosting;
 using Projects;
 
-var builder = DistributedApplication.CreateBuilder(args); ;
+var builder = DistributedApplication.CreateBuilder(args);
 
 // 1. pass users as args
 builder.AddSftp("sftp-1", port: 55010, args: "foo:pass:::uploads");

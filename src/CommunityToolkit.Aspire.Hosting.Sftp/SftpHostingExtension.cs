@@ -3,10 +3,6 @@ using CommunityToolkit.Aspire.Hosting.Sftp;
 
 namespace Aspire.Hosting;
 
-// TODO: test login with ssh keys (no pwd in users.conf)...
-// TODO: don't forget the missing xml comments!!!
-// TODO: add docs and all examples to readme (explain what each etc file does)...
-
 /// <summary>
 /// Provides extension methods for adding an SFTP resource to an <see cref="IDistributedApplicationBuilder"/>.
 /// </summary>
@@ -32,10 +28,12 @@ public static class SftpHostingExtension
             .WithImage(SftpContainerImageTags.Image)
             .WithImageTag(SftpContainerImageTags.Tag)
             .WithImageRegistry(SftpContainerImageTags.Registry)
-            .WithEndpoint(targetPort: SftpContainerResource.SftpEndpointPort,
-                port: port,
-                name: SftpContainerResource.SftpEndpointName,
-                scheme: "sftp")
+            .WithEndpoint("sftp", ep =>
+            {
+                ep.Port = port;
+                ep.TargetPort = SftpContainerResource.SftpEndpointPort;
+                ep.UriScheme = "sftp";
+            })
             ;
 
         if (!String.IsNullOrEmpty(args))

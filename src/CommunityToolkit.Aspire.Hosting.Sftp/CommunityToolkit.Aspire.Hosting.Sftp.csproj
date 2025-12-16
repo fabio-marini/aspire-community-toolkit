@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="CommunityToolkit.Aspire.Hosting.Sftp.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="README.md">
       <PackagePath>/</PackagePath>
       <Pack>true</Pack>
