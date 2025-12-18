@@ -1,11 +1,10 @@
-using Aspire.Components.Common.Tests;
-using CommunityToolkit.Aspire.Testing;
+using Projects;
 using Renci.SshNet;
+using Xunit.Abstractions;
 
-namespace CommunityToolkit.Aspire.Hosting.PapercutSmtp.Tests;
+namespace CommunityToolkit.Aspire.Hosting.Sftp.Tests;
 
-[RequiresDocker]
-public class AppHostTests(AspireIntegrationTestFixture<Projects.CommunityToolkit_Aspire_Hosting_Sftp_AppHost> fixture) : IClassFixture<AspireIntegrationTestFixture<Projects.CommunityToolkit_Aspire_Hosting_Sftp_AppHost>>
+public class AppHostTests2(ITestOutputHelper log)
 {
     private async Task Run(SftpClient client)
     {
@@ -23,57 +22,64 @@ public class AppHostTests(AspireIntegrationTestFixture<Projects.CommunityToolkit
         }
     }
 
-    private async Task<Uri> GetEndpoint(string resourceName)
-    {
-        await fixture.ResourceNotificationService.WaitForResourceHealthyAsync(resourceName).WaitAsync(TimeSpan.FromMinutes(2));
-
-        return fixture.GetEndpoint(resourceName, "sftp");
-    }
-
     [Fact]
-    public async Task Resource1StartsAndUserAuthenticates()
+    public async Task Resource1StartsAndUserAuthenticates2()
     {
-        var endpoint = await GetEndpoint("sftp-1");
+        var resourceNames = new string[] { "sftp-1", "sftp-2", "sftp-3", "sftp-4", "sftp-5", "sftp-6" };
 
-        var client = new SftpClient(endpoint.Host, endpoint.Port, "foo", "pass");
+        var builder = await DistributedApplicationTestingBuilder.CreateAsync<CommunityToolkit_Aspire_Hosting_Sftp_AppHost>();
 
-        await Run(client);
-    }
+        using var app = builder.Build();
 
-    [Fact]
-    public async Task Resource2StartsAndUserAuthenticates()
-    {
-        var endpoint = await GetEndpoint("sftp-2");
+        await app.StartAsync();
 
-        var client = new SftpClient(endpoint.Host, endpoint.Port, "foo", "pass");
+        var rns = app.Services.GetRequiredService<ResourceNotificationService>();
 
-        await Run(client);
-    }
-
-    [Fact]
-    public async Task Resource3StartsAndUserAuthenticates()
-    {
-        var endpoint = await GetEndpoint("sftp-3");
-
-        var client = new SftpClient(endpoint.Host, endpoint.Port, "foo", "pass");
-
-        client.HostKeyReceived += (obj, args) =>
+        foreach (var res in resourceNames)
         {
-            Assert.Equal("zfOQDzgMTHSJruZIK37h8L8Gfy3XIJmCXYdqW0OXS7s", args.FingerPrintSHA256);
-        };
+            await rns.WaitForResourceAsync(res, "Running");
+        }
 
-        await Run(client);
-    }
+        foreach (var res in resourceNames)
+        {
+            var sftp = builder.Resources.OfType<SftpContainerResource>().Single(x => x.Name == res);
 
-    [Fact]
-    public async Task Resource4StartsAndUserAuthenticates()
-    {
-        var endpoint = await GetEndpoint("sftp-4");
+            var connectionString = await sftp.ConnectionStringExpression.GetValueAsync(default);
 
-        var privateKey = new PrivateKeyFile("id_rsa");
+            log.WriteLine($"Resource {res} using connection string: {connectionString}");
 
-        var client = new SftpClient(endpoint.Host, endpoint.Port, "foo", privateKey);
+            var uri = new Uri(connectionString!);
 
-        await Run(client);
+            SftpClient client;
+
+            switch (res)
+            {
+                case "sftp-1":
+                case "sftp-2":
+                case "sftp-5":
+                case "sftp-6":
+                    client = new SftpClient(uri.Host, uri.Port, "foo", "pass");
+                    break;
+
+                case "sftp-3":
+                    client = new SftpClient(uri.Host, uri.Port, "foo", "pass");
+                    client.HostKeyReceived += (obj, args) =>
+                    {
+                        Assert.Equal("zfOQDzgMTHSJruZIK37h8L8Gfy3XIJmCXYdqW0OXS7s", args.FingerPrintSHA256);
+                    };
+                    break;
+
+                case "sftp-4":
+                    client = new SftpClient(uri.Host, uri.Port, "foo", new PrivateKeyFile("id_rsa"));
+                    break;
+
+                default:
+                    throw new NotSupportedException($"Resource {res}");
+            }
+
+            await Run(client);
+        }
+
+        await app.StopAsync();
     }
 }

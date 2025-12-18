@@ -40,3 +40,10 @@ builder.AddSftp("sftp-4", port: 55040, args: "foo::::uploads")
     .WithBindMount(".\\etc\\ssh\\ssh_host_rsa_key", "/etc/ssh/ssh_host_rsa_key")
     .WithBindMount(".\\home\\foo\\.ssh\\keys\\id_rsa.pub", "/home/foo/.ssh/keys/id_rsa.pub", isReadOnly: true);
 ```
+
+### Example 5: Add SFTP container with user credentials in environment variable
+
+```csharp
+builder.AddSftp("sftp-5", port: 55050)
+    .WithEnvironment("SFTP_USERS", "foo:pass:::uploads");
+```

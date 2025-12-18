@@ -1,31 +1,37 @@
 ﻿namespace Aspire.Hosting.ApplicationModel;
 
 /// <summary>
-/// Resource for the atmoz SFTP server.
+/// A resource that represents an SFTP container.
 /// </summary>
-/// <param name="name"></param>
+/// <param name="name">The name of the resource.</param>
 public class SftpContainerResource(string name) : ContainerResource(name), IResourceWithConnectionString
 {
     internal const int SftpEndpointPort = 22;
     internal const string SftpEndpointName = "sftp";
+
     private EndpointReference? _sftpEndpoint;
-    private EndpointReference SftpEndpoint => _sftpEndpoint ??= new EndpointReference(this, SftpEndpointName);
 
     /// <summary>
-    /// Gets the host endpoint reference for the SFTP endpoint.
+    /// Gets the primary endpoint for the SFTP server.
+    /// </summary>
+    private EndpointReference SftpEndpoint => _sftpEndpoint ??= new (this, SftpEndpointName);
+
+    /// <summary>
+    /// Gets the host endpoint reference for this resource.
     /// </summary>
     public EndpointReferenceExpression Host => SftpEndpoint.Property(EndpointProperty.Host);
 
     /// <summary>
-    /// Gets the port endpoint reference for the SFTP endpoint.
+    /// Gets the port endpoint reference for this resource.
     /// </summary>
     public EndpointReferenceExpression Port => SftpEndpoint.Property(EndpointProperty.Port);
 
     /// <summary>
     /// ConnectionString for the atmoz SFTP server in the form of sftp://host:port.
     /// </summary>
-    public ReferenceExpression ConnectionStringExpression => ReferenceExpression.Create(
-        $"Endpoint={SftpEndpoint.Scheme}://{SftpEndpoint.Property(EndpointProperty.Host)}:{SftpEndpoint.Property(EndpointProperty.Port)}");
+    public ReferenceExpression ConnectionStringExpression => 
+        ReferenceExpression.Create(
+            $"sftp://{SftpEndpoint.Property(EndpointProperty.Host)}:{SftpEndpoint.Property(EndpointProperty.Port)}");
 
     /// <summary>
     /// Gets the connection URI expression for the atmoz SFTP endpoint.
@@ -33,7 +39,7 @@ public class SftpContainerResource(string name) : ContainerResource(name), IReso
     /// <remarks>
     /// Format: <c>sftp://{host}:{port}</c>.
     /// </remarks>
-    public ReferenceExpression UriExpression => ReferenceExpression.Create($"{SftpEndpoint.Scheme}://{Host}:{Port}");
+    public ReferenceExpression UriExpression => ConnectionStringExpression;
 
     IEnumerable<KeyValuePair<string, ReferenceExpression>> IResourceWithConnectionString.GetConnectionProperties()
     {
