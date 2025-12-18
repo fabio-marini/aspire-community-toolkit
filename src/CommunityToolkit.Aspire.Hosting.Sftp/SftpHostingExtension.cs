@@ -33,6 +33,7 @@ public static class SftpHostingExtension
                 ep.Port = port;
                 ep.TargetPort = SftpContainerResource.SftpEndpointPort;
                 ep.UriScheme = "sftp";
+                //ep.IsProxied = false;
             })
             ;
 

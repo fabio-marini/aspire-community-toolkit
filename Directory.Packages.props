@@ -114,6 +114,7 @@
     <!-- Testcontainers packages -->
     <PackageVersion Include="Testcontainers" Version="$(TestContainersVersion)" />
     <PackageVersion Include="Testcontainers.MsSql" Version="$(TestContainersVersion)" />
+    <PackageVersion Include="Polly" Version="8.6.4" />
   </ItemGroup>
   <ItemGroup Label="System">
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />

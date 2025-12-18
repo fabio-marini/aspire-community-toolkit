@@ -4,7 +4,7 @@ using Projects;
 var builder = DistributedApplication.CreateBuilder(args);
 
 // 1. pass users as args
-builder.AddSftp("sftp-1", args: "foo:pass:::uploads");
+builder.AddSftp("sftp-1", port: 55010, args: "foo:pass:::uploads");
 
 // 2. store users in config
 builder.AddSftp("sftp-2", port: 55020)
