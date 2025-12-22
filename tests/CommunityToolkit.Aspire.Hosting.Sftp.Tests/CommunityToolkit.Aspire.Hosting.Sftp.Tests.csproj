@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_ed25519" Link="id_ed25519">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_rsa" Link="id_rsa">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
