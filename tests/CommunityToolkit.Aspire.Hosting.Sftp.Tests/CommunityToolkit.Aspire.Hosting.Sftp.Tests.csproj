@@ -6,10 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\etc\sftp\users.conf" Link="users.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\etc\ssh\ssh_host_ed25519_key" Link="ssh_host_ed25519_key">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_ed25519" Link="id_ed25519">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_ed25519.pub" Link="id_ed25519.pub">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_rsa" Link="id_rsa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\home\foo\.ssh\keys\id_rsa.pub" Link="id_rsa.pub">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -22,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\examples\sftp\CommunityToolkit.Aspire.Hosting.Sftp.AppHost\CommunityToolkit.Aspire.Hosting.Sftp.AppHost.csproj" />
     <ProjectReference Include="..\..\src\CommunityToolkit.Aspire.Hosting.Sftp\CommunityToolkit.Aspire.Hosting.Sftp.csproj" />
+    <ProjectReference Include="..\..\src\CommunityToolkit.Aspire.Sftp\CommunityToolkit.Aspire.Sftp.csproj" />
     <ProjectReference Include="..\CommunityToolkit.Aspire.Testing\CommunityToolkit.Aspire.Testing.csproj" />
   </ItemGroup>
 

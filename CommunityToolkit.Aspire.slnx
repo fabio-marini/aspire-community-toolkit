@@ -125,6 +125,7 @@
     <Project Path="examples/papercut/CommunityToolkit.Aspire.Hosting.PapercutSmtp.ServiceDefaults/CommunityToolkit.Aspire.Hosting.PapercutSmtp.ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/examples/sftp/">
+    <Project Path="examples/sftp/CommunityToolkit.Aspire.Hosting.Sftp.ApiService/CommunityToolkit.Aspire.Hosting.Sftp.ApiService.csproj" />
     <Project Path="examples/sftp/CommunityToolkit.Aspire.Hosting.Sftp.AppHost/CommunityToolkit.Aspire.Hosting.Sftp.AppHost.csproj" />
     <Project Path="examples/sftp/CommunityToolkit.Aspire.Hosting.Sftp.ServiceDefaults/CommunityToolkit.Aspire.Hosting.Sftp.ServiceDefaults.csproj" />
   </Folder>

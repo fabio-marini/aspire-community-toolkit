@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CommunityToolkit.Aspire.Hosting.Sftp\CommunityToolkit.Aspire.Hosting.Sftp.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\CommunityToolkit.Aspire.Hosting.Sftp.ApiService\CommunityToolkit.Aspire.Hosting.Sftp.ApiService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
