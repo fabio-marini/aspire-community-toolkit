@@ -70,12 +70,14 @@ public static class SftpHostingExtensions
     {
         ArgumentNullException.ThrowIfNullOrEmpty(usersFile, nameof(usersFile));
 
-        if (!File.Exists(usersFile))
+        var fileInfo = new FileInfo(usersFile);
+
+        if (!fileInfo.Exists)
         {
-            throw new FileNotFoundException($"File '{usersFile}' not found");
+            throw new FileNotFoundException($"File '{fileInfo.FullName}' not found");
         }
 
-        return builder.WithBindMount(usersFile, "/etc/sftp/users.conf", isReadOnly: true);
+        return builder.WithBindMount(fileInfo.FullName, "/etc/sftp/users.conf", isReadOnly: true);
     }
 
     /// <summary>
@@ -101,19 +103,21 @@ public static class SftpHostingExtensions
     {
         ArgumentNullException.ThrowIfNullOrEmpty(keyFile, nameof(keyFile));
 
-        if (!File.Exists(keyFile))
+        var fileInfo = new FileInfo(keyFile);
+
+        if (!fileInfo.Exists)
         {
-            throw new FileNotFoundException($"File '{keyFile}' not found");
+            throw new FileNotFoundException($"File '{fileInfo.FullName}' not found");
         }
 
         switch (keyType)
         {
             case KeyType.Ed25519:
-                builder.WithBindMount(keyFile, "/etc/ssh/ssh_host_ed25519_key");
+                builder.WithBindMount(fileInfo.FullName, "/etc/ssh/ssh_host_ed25519_key");
                 break;
 
             case KeyType.Rsa:
-                builder.WithBindMount(keyFile, "/etc/ssh/ssh_host_rsa_key");
+                builder.WithBindMount(fileInfo.FullName, "/etc/ssh/ssh_host_rsa_key");
                 break;
         }
 
@@ -145,13 +149,13 @@ public static class SftpHostingExtensions
         ArgumentNullException.ThrowIfNullOrEmpty(username, nameof(username));
         ArgumentNullException.ThrowIfNullOrEmpty(keyFile, nameof(keyFile));
 
-        if (!File.Exists(keyFile))
+        var fileInfo = new FileInfo(keyFile);
+
+        if (!fileInfo.Exists)
         {
-            throw new FileNotFoundException($"File '{keyFile}' not found");
+            throw new FileNotFoundException($"File '{fileInfo.FullName}' not found");
         }
 
-        var fileName = Path.GetFileName(keyFile);
-
-        return builder.WithBindMount(keyFile, $"/home/{username}/.ssh/keys/{fileName}");
+        return builder.WithBindMount(fileInfo.FullName, $"/home/{username}/.ssh/keys/{fileInfo.Name}");
     }
 }
